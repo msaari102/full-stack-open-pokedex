@@ -8,6 +8,8 @@ on:
 jobs:
   a_test_job:
     runs-on: ubuntu-20.04
+    env:
+          COMMIT_MESSAGES: ${{ toJson(github.event.commits.*.message) }}
     steps:
       - uses: actions/checkout@v2
       - name: gihub context
@@ -19,11 +21,7 @@ jobs:
           COMMITS: ${{ toJson(github.event.commits) }}
         run: echo "$COMMITS"
       - name: commit messages
-        env:
-          COMMIT_MESSAGES: ${{ toJson(github.event.commits.*.message) }}
         run: echo "$COMMIT_MESSAGES"
       - name: skip detection
-        env:
-          COMMIT_MESSAGES: ${{ toJson(github.event.commits.*.message) }}  
         if: ${{ contains(env.COMMIT_MESSAGES, '#skip') }}
         run: echo skip detected
