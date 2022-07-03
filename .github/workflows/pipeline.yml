@@ -57,7 +57,7 @@ jobs:
         with:
             severity: info
             text: A new version of Pokedex deployed
-            description: 'to https://damp-journey-95242.herokuapp.com/ by' + ${{ github.actor}}
+            details: to https://damp-journey-95242.herokuapp.com/ by ${{ github.actor}}
             webhookUrl: ${{ secrets.DISCORD_WEBHOOK }}
       - name: Test Failure
         uses: rjstone/discord-webhook-notify@v1
@@ -65,8 +65,8 @@ jobs:
         with:
             severity: error
             text: Build failed
-            description: 'commit'
-            details: ${{github.sha}} + ' by ' + ${{github.actor}} + ' broke the build :('
+            description: commit
+            details: '${{github.sha}} by ${{github.actor}} broke the build :('
             webhookUrl: ${{ secrets.DISCORD_WEBHOOK }}
 
   tag_release:
