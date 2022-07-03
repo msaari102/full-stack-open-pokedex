@@ -48,6 +48,7 @@ jobs:
         with:
             severity: info
             text: A new version of Pokedex deployed
+            description:
             details: to https://damp-journey-95242.herokuapp.com/ by ${{ github.actor}}
             webhookUrl: ${{ secrets.DISCORD_WEBHOOK }}
       - name: Test Failure
