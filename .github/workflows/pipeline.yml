@@ -53,7 +53,7 @@ jobs:
           node-version: '16'
       - name: Test Success
         uses: rjstone/discord-webhook-notify@v1
-        if: ${{ github.event_name == 'push'}} && success()
+        if: ${{ github.event_name == 'push'  && success()}}
         with:
             severity: info
             text: A new version of Pokedex deployed
@@ -61,12 +61,12 @@ jobs:
             webhookUrl: ${{ secrets.DISCORD_WEBHOOK }}
       - name: Test Failure
         uses: rjstone/discord-webhook-notify@v1
-        if: ${{ github.event_name == 'push'}} && failure()
+        if: ${{ github.event_name == 'push' && failure()}} 
         with:
             severity: error
             text: Build failed
             description: commit
-            details: '${{github.sha}} by ${{github.actor}} broke the build :('
+            details: 'https://github.com/msaari102/full-stack-open-pokedex/commit/${{github.sha}} by ${{github.actor}} broke the build :('
             webhookUrl: ${{ secrets.DISCORD_WEBHOOK }}
 
   tag_release:
