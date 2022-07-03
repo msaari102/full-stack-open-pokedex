@@ -42,15 +42,6 @@ jobs:
           healthcheck: "https://damp-journey-95242.herokuapp.com/health"
           checkstring: "ok"
           rollbackonhealthcheckfailed: true
-      
-  discord_hook:
-    needs: [simple_deployment_pipeline]
-    runs-on: ubuntu-20.04
-    steps: 
-      - uses: actions/checkout@v3
-      - uses: actions/setup-node@v2
-        with:
-          node-version: '16'
       - name: Test Success
         uses: rjstone/discord-webhook-notify@v1
         if: ${{ github.event_name == 'push'  && success()}}
@@ -67,7 +58,7 @@ jobs:
             text: Build failed
             description: commit
             details: 'https://github.com/msaari102/full-stack-open-pokedex/commit/${{github.sha}} by ${{github.actor}} broke the build :('
-            webhookUrl: ${{ secrets.DISCORD_WEBHOOK }}
+            webhookUrl: ${{ secrets.DISCORD_WEBHOOK }}    
 
   tag_release:
     needs: [simple_deployment_pipeline]
