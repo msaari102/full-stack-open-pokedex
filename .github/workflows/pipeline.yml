@@ -42,23 +42,32 @@ jobs:
           healthcheck: "https://damp-journey-95242.herokuapp.com/health"
           checkstring: "ok"
           rollbackonhealthcheckfailed: true
+      
+  discord_hook:
+    needs: [simple_deployment_pipeline]
+    runs-on: ubuntu-20.04
+    steps: 
+      - uses: actions/checkout@v3
+      - uses: actions/setup-node@v2
+        with:
+          node-version: '16'
       - name: Test Success
         uses: rjstone/discord-webhook-notify@v1
-        if: success()
+        if: ${{ github.event_name == 'push'}} && success()
         with:
             severity: info
             text: A new version of Pokedex deployed
-            details:
+            description: 'to https://damp-journey-95242.herokuapp.com/ by' + ${{ github.actor}}
             webhookUrl: ${{ secrets.DISCORD_WEBHOOK }}
       - name: Test Failure
         uses: rjstone/discord-webhook-notify@v1
-        if: failure()
+        if: ${{ github.event_name == 'push'}} && failure()
         with:
             severity: error
             text: Build failed
-            details: 
+            description: 'commit'
+            details: ${{github.sha}} + ' by ' + ${{github.actor}} + ' broke the build :('
             webhookUrl: ${{ secrets.DISCORD_WEBHOOK }}
-
 
   tag_release:
     needs: [simple_deployment_pipeline]
